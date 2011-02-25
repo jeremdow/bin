@@ -1,0 +1,2 @@
+#!/bin/sh
+reflector -f | pv | tee /etc/pacman.d/mirrorlist

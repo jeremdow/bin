@@ -1,0 +1,26 @@
+#!/bin/sh
+dest='jeremdow.com'
+hostname=`hostname`
+rsync -Pavze ssh --delete \
+	--exclude /etc/.pwd.lock \
+	--exclude /etc/crypttab \
+	--exclude /etc/group- \
+	--exclude /etc/gshadow \
+	--exclude /etc/gshadow- \
+	--exclude /etc/passwd- \
+	--exclude /etc/shadow \
+	--exclude /etc/shadow- \
+	--exclude /etc/sudoers \
+	--exclude /etc/sudoers.d \
+	--exclude /etc/polkit-1/localauthority \
+	--exclude /etc/ppp/chap-secrets \
+	--exclude /etc/ppp/pap-secrets \
+	--exclude /etc/mtab.fuselock \
+	--exclude ~/.cache \
+	--exclude ~/.config/chromium \
+	--exclude ~/.git \
+	--exclude ~/bin/.git \
+	--exclude ~/src/.git \
+	--exclude ~/Downloads \
+/home /etc /boot/grub/menu.lst \
+$dest:~/backup/$hostname

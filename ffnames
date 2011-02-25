@@ -1,0 +1,6 @@
+#!/bin/sh
+# TODO: take argument (pattern) and enable reverse to proper
+for f in *; do
+     file=$(echo $f | tr A-Z a-z | tr ' ' _)
+     [ ! -f $file ] && [ ! -e $file ] && mv "$f" $file
+done

@@ -1,0 +1,2 @@
+#!/bin/sh
+tabbed -d | xargs -I {} surf -e '{}' http://www.google.com

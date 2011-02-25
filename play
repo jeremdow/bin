@@ -1,0 +1,9 @@
+#!/bin/sh
+if [ "$1" ]
+then
+	path="$HOME/Music"
+else
+	path=`pwd`
+fi
+find "$path" -iname "*$1*.???" | sort > $HOME/Music/playlist
+mplayer -playlist $HOME/Music/playlist

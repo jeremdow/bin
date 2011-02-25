@@ -1,0 +1,9 @@
+#!/bin/sh
+## current conditions from mobile.weather.gov in degrees fahrenheit
+## zip code is first parameter, set default as $zip
+
+#links or compatible text browser
+browser="links"
+zip=02150
+
+echo `$browser -dump "http://mobile.weather.gov/port_zc.php?inputstring=${1:-$zip}" | grep DEGF`
