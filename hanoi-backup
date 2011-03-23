@@ -40,7 +40,7 @@ echo
 
 # Repair the database and create the backup
 echo "Checking tables"
-mysqlcheck -Aao -u$user -p$password
+mysqlcheck -Ao -u$user -p$password
 echo
 echo "Dumping backup"
 mysqldump --all-databases -v -u$user -p$password | xz > $dest/$mysql_archive
