@@ -80,14 +80,14 @@ done
 
 # Remove the expired backups
 expired_mysql=$hostname-$(date -d "$expired days ago" +%F).sql.xz
-if [ -f $expired_mysql ]
-	echo "Attempting to remove expired backup: $expired_mysql"
+echo "Attempting to remove expired backup: $expired_mysql"
+if [ -f $dest/$expired_mysql ]
 	rm "$dest/$expired_mysql"
 	echo
 fi
 expired_file=$hostname-$(date -d "$expired days ago" +%F).tar.xz
-if [ -f $expired_file ]
-	echo "Attempting to remove expired backup: $expired_file"
+echo "Attempting to remove expired backup: $expired_file"
+if [ -f $dest/$expired_file ]
 	rm "$dest/$expired_file"
 	echo
 fi
