@@ -16,9 +16,12 @@ rsync -Pavze ssh --delete \
 	--exclude /etc/ppp/chap-secrets \
 	--exclude /etc/ppp/pap-secrets \
 	--exclude /etc/mtab.fuselock \
+	--exclude ~/.adobe \
 	--exclude ~/.cache \
 	--exclude ~/.config/chromium \
+	--exclude ~/.dbus \
 	--exclude ~/.git \
+	--exclude ~/.macromedia \
 	--exclude ~/bin/.git \
 	--exclude ~/src/.git \
 	--exclude ~/Downloads \
