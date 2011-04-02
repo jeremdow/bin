@@ -1,6 +1,6 @@
 #!/bin/sh
 # output packages not built by me
 pacman -Qi | \
-	awk -F ": " '/Name/ { printf "%-30s", $2 }
-		/Packager/ { print $2 }' | \
-	awk '! /(jeremdow@gmail.com)/ { print $1 }'
+    awk -F ": " '/Name/ { printf "%-30s", $2 }
+        /Packager/ { print $2 }' | \
+    awk '! /(jeremdow@gmail.com)/ { print $1 }'

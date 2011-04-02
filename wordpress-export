@@ -8,18 +8,18 @@ read dbpwd
 stty echo
 
 posts(){
-	mysql -p$dbpwd -D$db -s -e "SELECT ID from wp_posts WHERE post_status = 'publish' AND post_type = 'post';"
+    mysql -p$dbpwd -D$db -s -e "SELECT ID from wp_posts WHERE post_status = 'publish' AND post_type = 'post';"
 }
 selpost() {
-	mysql -p$dbpwd -D$db -s -e "SELECT $1 FROM wp_posts WHERE ID = $2;"
+    mysql -p$dbpwd -D$db -s -e "SELECT $1 FROM wp_posts WHERE ID = $2;"
 }
 lastrev() {
-	mysql -p$dbpwd -D$db -s -e "SELECT MAX(ID) FROM wp_posts WHERE post_parent = $1;"
+    mysql -p$dbpwd -D$db -s -e "SELECT MAX(ID) FROM wp_posts WHERE post_parent = $1;"
 }
 
 if [ -d archives ]
 then
-	rm -rf archives
+    rm -rf archives
 fi
 mkdir archives
 cd ./archives
@@ -27,34 +27,34 @@ cd ./archives
 posts > ../posts
 while read line
 do
-	date=`selpost post_date $line`
-	year=`echo $date | awk -F'-' '{print $1}'`
-	if [ ! -d $year ]
-	then
-		mkdir $year
-	fi
-	month=`echo $date | awk -F'-' '{print $2}'`
-	if [ ! -d $year/$month ]
-	then
-		mkdir $year/$month
-	fi
-	day=`echo $date | awk -F'-' '{print $3}' | awk '{print $1}'`
-	if [ ! -d $year/$month/$day ]
-	then
-		mkdir $year/$month/$day
-	fi
-	current=`lastrev $line`
-	post_title=`selpost post_title $current`
-	echo $post_title > ../post
-	echo -e '=========================================\n' >> ../post
+    date=`selpost post_date $line`
+    year=`echo $date | awk -F'-' '{print $1}'`
+    if [ ! -d $year ]
+    then
+        mkdir $year
+    fi
+    month=`echo $date | awk -F'-' '{print $2}'`
+    if [ ! -d $year/$month ]
+    then
+        mkdir $year/$month
+    fi
+    day=`echo $date | awk -F'-' '{print $3}' | awk '{print $1}'`
+    if [ ! -d $year/$month/$day ]
+    then
+        mkdir $year/$month/$day
+    fi
+    current=`lastrev $line`
+    post_title=`selpost post_title $current`
+    echo $post_title > ../post
+    echo -e '=========================================\n' >> ../post
 
-	# pass the latest revision to html2text: https://github.com/aaronsw/html2text.git
-	echo -e `selpost post_content $current | html2text` >> ../post
-	
-	count=`ls -1 $year/$month/$day | wc -l`
-	mkdir $year/$month/$day/$count
-	cat ../post > $year/$month/$day/$count/index.md
-	echo $year/$month/$day/$count/index.md
-	rm ../post
+    # pass the latest revision to html2text: https://github.com/aaronsw/html2text.git
+    echo -e `selpost post_content $current | html2text` >> ../post
+
+    count=`ls -1 $year/$month/$day | wc -l`
+    mkdir $year/$month/$day/$count
+    cat ../post > $year/$month/$day/$count/index.md
+    echo $year/$month/$day/$count/index.md
+    rm ../post
 done < ../posts
 rm ../posts

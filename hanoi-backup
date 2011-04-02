@@ -67,29 +67,29 @@ echo
 # Calculate the previous move in the cycle
 ((day=$(date +%s)/86400))
 for (( i=1; i<=$max/2; i=2*i ))
-	do
-	(( rotation=$day & i ))
-	if [ "$rotation" -eq "0" ]
-	then
-		(( expired=$i*2 ))
-		break
-	else
-		expired="4"
-	fi
+    do
+    (( rotation=$day & i ))
+    if [ "$rotation" -eq "0" ]
+    then
+        (( expired=$i*2 ))
+        break
+    else
+        expired="4"
+    fi
 done
 
 # Remove the expired backups
 expired_mysql=$hostname-$(date -d "$expired days ago" +%F).sql.xz
 echo "Attempting to remove expired backup: $expired_mysql"
 if [ -f $dest/$expired_mysql ]
-	rm "$dest/$expired_mysql"
-	echo
+    rm "$dest/$expired_mysql"
+    echo
 fi
 expired_file=$hostname-$(date -d "$expired days ago" +%F).tar.xz
 echo "Attempting to remove expired backup: $expired_file"
 if [ -f $dest/$expired_file ]
-	rm "$dest/$expired_file"
-	echo
+    rm "$dest/$expired_file"
+    echo
 fi
 
 # Finished
