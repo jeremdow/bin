@@ -25,5 +25,6 @@ rsync -Pavze ssh --delete \
     --exclude ~/bin/.git \
     --exclude ~/src/.git \
     --exclude ~/Downloads \
+    --exclude /home/kenn \
 /home /etc /boot/grub/menu.lst \
 $dest:~/backup/$hostname
