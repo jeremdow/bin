@@ -5,5 +5,5 @@ then
 else
     path=`pwd`
 fi
-find "$path" -iname "*$1*.???" | sort > $HOME/Music/playlist
+find "$path" -iname "*$1*.???*" | sort > $HOME/Music/playlist
 mplayer -playlist $HOME/Music/playlist
