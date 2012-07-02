@@ -1,0 +1,7 @@
+#!/bin/bash
+
+find . -iname "*.pdf" | \
+while read f; do
+	echo "Processing $f..."
+	pdf2swf "$f" -o "${f/.pdf/.swf}" -T 9 -f
+done

@@ -1,2 +1,0 @@
-#!/bin/sh
-rdesktop -uadministrator -g1024x768 -a16 sbserver
