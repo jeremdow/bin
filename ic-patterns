@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# img src
+find -name 'L1*.xhtml' -exec sed -i 's/L1_images/assets\/images/' '{}' \;
+
+# audio src
+find -name 'Intro*.xhtml' -exec sed -i 's/FMmedia-[b-f]/assets\/media/' '{}' \;
+
+# img widths
+find -name '*.xhtml' -exec sed -r 's/(<img.*) width="([0-9]?[0-9]{2}%)"/\1 style="width:\2;"/' '{}' \;
+
+# table widths
+find -name '*.xhtml' -exec sed -r 's/(<table.*) width="([0-9]?[0-9]{2}%)"/\1 style="width:\2;"/' '{}' \;
+
+# audio fallback message
+find -name '*.xhtml' -exec sed -r -i 's/(<\/audio>)/Audio not supported.\1/' '{}' \;
+
+# center aligned divs
+find -name '*.xhtml' -exec sed -r -i 's/(<div.*) align="center"/\1 style="text-align:center;"/' '{}' \;
+
+##################
+
+# L1 Grammar
+find -name 'L1_3.xhtml' -exec sed -r -i 's/(#Grammar1-[0-3])/L1_4.xhtml\1/' '{}' \;
+find -name 'L1_6.xhtml' -exec sed -r -i 's/(#Grammar1-[4-7])/L1_8.xhtml\1/' '{}' \;
+
+find -name 'L2_*.xhtml' -exec sed -r 's/LN_link/LN/' '{}' \;
+
+
+# find broken fragments and repair (it's close)
+$(ic-frag)
+
+# images
+
+PO.jpg D1.jpg D2.jpg

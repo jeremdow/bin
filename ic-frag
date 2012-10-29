@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for fragment in `cat "$1" | egrep -o \"L[0-9]+.xhtml\#.*\" | awk -F'#' '{print $2}' | sed 's/\"//'`
+do
+	echo $fragment
+	file=`search \""$fragment"\" *.xhtml`
+	echo $file
+	cat "$1" | sed -r "s/L[0-9]+.xhtml\#$fragment/$file\#$fragment/" | egrep L1_[0-9]+.xhtml
+	sed -r -i "s/L[0-9]+.xhtml\#$fragment/$file\#$fragment/" "$1"
+done

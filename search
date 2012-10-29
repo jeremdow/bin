@@ -1,0 +1,10 @@
+#!/bin/bash
+pattern="$1"
+shift
+for file in $@
+do
+	if egrep -q "$pattern" "$file"
+	then 
+		echo $file
+	fi
+done
