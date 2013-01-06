@@ -1,0 +1,36 @@
+#!/bin/sh
+
+cd /usr/local
+
+mount -t proc none chroot/proc
+mount -o bind /dev chroot/dev
+mount -o bind /dev/pts chroot/dev/pts
+mount -o bind /sys chroot/sys
+mount -o bind /tmp chroot/tmp
+
+if [ -f /etc/resolv.conf ]
+then
+	cp /etc/resolv.conf chroot/etc/resolv.conf
+fi
+
+mount -o bind /home/chronos/user/home chroot/home
+
+case "$1" in
+-u)	cp /home/chronos/.Xauthority chroot/home/$2/.Xauthority
+	mount -o bind /home/chronos/user/Downloads chroot/home/$2/Downloads
+	chroot chroot/ /bin/bash -c "cd /home/$2; su $2"
+	umount chroot/home/$2/Downloads
+	;;
+-tty)	chroot chroot/ openvt -c $2 -f -w -- /sbin/agetty 38400 tty$2
+	;;
+*)	cp /home/chronos/.Xauthority chroot/root/.Xauthority
+	chroot chroot/ /bin/bash
+	;;
+esac
+
+umount chroot/proc
+umount chroot/dev/pts
+umount chroot/dev
+umount chroot/sys
+umount chroot/tmp
+umount chroot/home
