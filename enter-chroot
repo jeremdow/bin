@@ -2,11 +2,20 @@
 
 cd /usr/local
 
+mount -i -o remount,exec /home/chronos/user
+
 mount -t proc none chroot/proc
 mount -o bind /dev chroot/dev
 mount -o bind /dev/pts chroot/dev/pts
 mount -o bind /sys chroot/sys
 mount -o bind /tmp chroot/tmp
+
+#mount -o bind /usr/lib64 chroot/usr/local/lib
+#mount -o bind /usr/bin chroot/usr/local/bin
+
+#mount -o bind /usr/lib64/xorg/modules/input chroot/usr/lib/xorg/modules/input
+#mount -o bind /etc/X11/xorg.conf.d chroot/etc/X11/xorg.conf.d
+
 
 if [ -f /etc/resolv.conf ]
 then
@@ -34,3 +43,11 @@ umount chroot/dev
 umount chroot/sys
 umount chroot/tmp
 umount chroot/home
+
+#umount chroot/usr/local/lib
+#umount chroot/usr/local/bin
+
+#umount chroot/usr/lib/xorg/modules/input
+#umount chroot/etc/X11/xorg.conf.d
+
+mount -i -o remount,noexec /home/chronos/user
