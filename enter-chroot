@@ -2,6 +2,7 @@
 # Copyright (c) 2012 The Chromium OS Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+# https://github.com/dnschneid/crouton
 
 APPLICATION="${0##*/}"
 CHROOTS="`readlink -f "\`dirname "$0"\`/../chroots"`"
@@ -132,6 +133,15 @@ mount --bind /var/run/shill "$CHROOT/etc/host-shill"
 # Bind-mount ~/Downloads if we're logged in as a user
 localdownloads='/home/chronos/user/Downloads'
 if [ -z "$NOLOGIN" -a -n "$CHROOTHOME" -a -d "$localdownloads" ]; then
+    # arch complains about these missing mounts - jmd
+    #mount --bind '/home/chronos' "$CHROOT/home/chronos"
+    #mount --bind '/home/user' "$CHROOT/home/user"
+    #mount --bind '/home/root' "$CHROOT/home/root"
+    #mount --bind '/home/.shadow' "$CHROOT/home/.shadow"
+
+    # Remount home directory from encrypted user folder - jmd
+    mount --bind "/home/chronos/user/chroots/$NAME/$CHROOTHOME" "$CHROOT/$CHROOTHOME"
+
     mkdir -p "$CHROOT/$CHROOTHOME/Downloads"
     mount --bind "$localdownloads" "$CHROOT/$CHROOTHOME/Downloads"
 fi
