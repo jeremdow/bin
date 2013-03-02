@@ -2,7 +2,6 @@
 # Copyright (c) 2012 The Chromium OS Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-# https://github.com/dnschneid/crouton
 
 APPLICATION="${0##*/}"
 CHROOTS="`readlink -f "\`dirname "$0"\`/../chroots"`"
@@ -113,6 +112,9 @@ while ! mountpoint -q "$mp"; do
 done
 mount -o remount,rw,dev,exec "$mp"
 
+# Remount chronos home directory exectutable -jmd
+mount -i -o remount,exec /home/chronos/user
+
 # Prepare chroot filesystem
 # Soft-link resolv.conf so that updates are automatically propagated
 mkdir -p "$CHROOT/etc/host-shill"
@@ -130,16 +132,18 @@ mount --bind /tmp "$CHROOT/tmp"
 mount --bind /proc "$CHROOT/proc"
 mount --bind /var/run/shill "$CHROOT/etc/host-shill"
 
+# Arch complains about these missing mounts - jmd
+mount --bind /sys/fs/cgroup "$CHROOT/sys/fs/cgroup"
+# mount --bind '/home/chronos' "$CHROOT/home/chronos"
+# mount --bind '/home/user' "$CHROOT/home/user"
+# mount --bind '/home/root' "$CHROOT/home/root"
+# mount --bind '/home/.shadow' "$CHROOT/home/.shadow"
+
 # Bind-mount ~/Downloads if we're logged in as a user
 localdownloads='/home/chronos/user/Downloads'
 if [ -z "$NOLOGIN" -a -n "$CHROOTHOME" -a -d "$localdownloads" ]; then
-    # arch complains about these missing mounts - jmd
-    #mount --bind '/home/chronos' "$CHROOT/home/chronos"
-    #mount --bind '/home/user' "$CHROOT/home/user"
-    #mount --bind '/home/root' "$CHROOT/home/root"
-    #mount --bind '/home/.shadow' "$CHROOT/home/.shadow"
 
-    # Remount home directory from encrypted user folder - jmd
+    # Remount home directory from encrypted user directory - jmd
     mount --bind "/home/chronos/user/chroots/$NAME/$CHROOTHOME" "$CHROOT/$CHROOTHOME"
 
     mkdir -p "$CHROOT/$CHROOTHOME/Downloads"
