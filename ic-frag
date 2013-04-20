@@ -1,10 +1,39 @@
 #!/bin/bash
 
-for fragment in `cat "$1" | egrep -o \"L[0-9]+.xhtml\#.*\" | awk -F'#' '{print $2}' | sed 's/\"//'`
+for input in $@
 do
-	echo $fragment
-	file=`search \""$fragment"\" *.xhtml`
-	echo $file
-	cat "$1" | sed -r "s/L[0-9]+.xhtml\#$fragment/$file\#$fragment/" | egrep L1_[0-9]+.xhtml
-	sed -r -i "s/L[0-9]+.xhtml\#$fragment/$file\#$fragment/" "$1"
+	echo INPUT: $input
+
+	for link in `cat "$input" | egrep -o 'href=\".*#[A-Za-z0-9_\-]+' | awk -F'href' '{ print $2 "\n" $3 "\n" $4 "\n" $5 "\n" $6 "\n" $7 "\n" $8 }'`
+	do
+		#echo $link
+		href=`echo $link | grep \# | awk -F'"' '{ print $2 }'`
+
+		if [ -n "$href" ]
+		then
+			if echo $href | grep .xhtml
+			then
+				prefix=`echo "$href" | awk -F'.' '{ print $1 }'`
+			else
+				prefix=`echo $input | awk -F'_' '{ print $1 }'`
+			fi
+			
+			fragment=`echo "$href" | awk -F'#' '{print $2}'`
+			path=`echo "$href" | awk -F'#' '{print $1}'`
+			echo href: $href
+			echo prefix: $prefix
+			echo fragment: $fragment
+			echo original path: $path
+
+			if [ ! -e "$path" ]
+			then
+				file=`search \""$fragment"\" "$prefix"*.xhtml | head -1`
+				echo file: $file
+				echo new path: $file\#$fragment
+				cat "$input" | sed -r "s/\"$href/\"$file\#$fragment/g" | egrep $file#$fragment
+				sed -r -i "s/\"$href/\"$file\#$fragment/" "$input"
+				echo
+			fi
+		fi
+	done
 done
