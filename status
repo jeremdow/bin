@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# $Date$
+# $Date: Mon 29 Apr 2013 09:15:37 AM UTC $
 
 echo $(uptime | tac -s : | head -1 | sed -r 's/,//g') \
 	$(netawk) \
