@@ -1,0 +1,10 @@
+#!/bin/sh
+# $Id$
+# $Date: Mon 29 Apr 2013 08:56:24 AM UTC $
+
+echo $(uptime | tac -s : | head -1 | sed -r 's/,//g') \
+	$(netawk) \
+	$(free -m | grep + | awk '{ print $3 }')MB \
+	/:$(df -h | grep /dev/xvda | awk '{ print $5 }')
+
+#echo $(dwmstatus && netawk2 eth0)
