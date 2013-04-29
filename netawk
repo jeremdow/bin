@@ -1,18 +1,38 @@
 #!/bin/sh
 # $Id$
-# $Date: Mon 29 Apr 2013 08:39:10 AM UTC $
+# $Date: Mon 29 Apr 2013 08:50:28 AM UTC $
+# Jeremiah Dow <jeremdow@gmail.com>
+#
+# Prints the average transfer rates since last run to stdout.
+# If used with tmux, dwm, etc, it can be run over any interval.
+#
+# Usage: netawk [interface] [cache]
 
-echo $(grep eth0 /proc/net/dev | \
-	awk '{ print $2, $10 }') >> /tmp/netdev
+iface=${1-eth0}
+cache=${2-/tmp/netawk}
 
-#cat /tmp/netdev
-#awk '{ printf("%.2fkB/s %.2fkB/s", ($3-$1)/1024, ($4-$2)/1024) }' /tmp/netdev
-#echo; echo --------------------
+if [ ! -f $cache ]
+then
+	echo $(grep $iface /proc/net/dev | \
+		awk '{ print $2, $10 }') > $cache
+fi
 
-awk '
-{ 
-	rx=($3-$1)/1024;
-	tx=($4-$2)/1024;
+lastcheck=$(stat -c %Z $cache)
+(( interval=$(date +%s)-$lastcheck ))
+
+echo $(grep $iface /proc/net/dev | \
+	awk '{ print $2, $10 }') >> $cache
+
+awk ' {
+	rxa[NR]=$1;
+	txa[NR]=$2;
+}
+
+END {
+	if ('$interval') {
+		rx=(rxa[2]-rxa[1])/1024/'$interval';
+		tx=(txa[2]-txa[1])/1024'$interval';
+	}
 
 	if (rx > 1024) {
 		rx=sprintf("%.2fMB/s", rx/1024);
@@ -28,11 +48,9 @@ awk '
 		tx=sprintf("%.0fKb/s", tx)
 	}
 
-	printf("↓%s ↑%s", rx, tx);
+	printf("↓%s ↑%s\n", rx, tx);
 }
-' /tmp/netdev
+' $cache
 
-echo -n $(grep eth0 /proc/net/dev | \
-	awk '{ print $2, $10 }') > /tmp/netdev
-echo -n ' ' >> /tmp/netdev
-echo
+echo $(grep $iface /proc/net/dev | \
+	awk '{ print $2, $10 }') > $cache
