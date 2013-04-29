@@ -1,0 +1,38 @@
+#!/bin/sh
+# $Id$
+# $Date:$
+
+echo $(grep eth0 /proc/net/dev | \
+	awk '{ print $2, $10 }') >> /tmp/netdev
+
+#cat /tmp/netdev
+#awk '{ printf("%.2fkB/s %.2fkB/s", ($3-$1)/1024, ($4-$2)/1024) }' /tmp/netdev
+#echo; echo --------------------
+
+awk '
+{ 
+	rx=($3-$1)/1024;
+	tx=($4-$2)/1024;
+
+	if (rx > 1024) {
+		rx=sprintf("%.2fMB/s", rx/1024);
+	}
+	else {
+		rx=sprintf("%.0fKb/s", rx)
+	}
+
+	if (tx > 1024) {
+		tx=sprintf("%.2fMB/s", tx/1024);
+	}
+	else {
+		tx=sprintf("%.0fKb/s", tx)
+	}
+
+	printf("↓%s ↑%s", rx, tx);
+}
+' /tmp/netdev
+
+echo -n $(grep eth0 /proc/net/dev | \
+	awk '{ print $2, $10 }') > /tmp/netdev
+echo -n ' ' >> /tmp/netdev
+echo
