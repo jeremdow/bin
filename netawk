@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# $Date:$
+# $Date: Mon 29 Apr 2013 08:39:10 AM UTC $
 
 echo $(grep eth0 /proc/net/dev | \
 	awk '{ print $2, $10 }') >> /tmp/netdev
