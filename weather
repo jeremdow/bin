@@ -1,9 +1,14 @@
 #!/bin/sh
-## current conditions from mobile.weather.gov in degrees fahrenheit
-## zip code is first parameter, set default as $zip
+# $Id$
+# $Date: Mon 29 Apr 2013 01:15:23 PM UTC $
+# Jeremiah Dow <jeremdow@gmail.com>
+#
+# current conditions from Google in degrees fahrenheit
+#
+# Usage: weather [city]
 
-#links or compatible text browser
+# links or compatible text browser
 browser="links"
-zip=02150
+city=$(echo ${@:-juneau} | tr " " "+")
 
-echo `$browser -dump "http://mobile.weather.gov/port_zc.php?inputstring=${1:-$zip}" | grep DEGF`
+$browser -dump "http://www.google.com/search?hl=en&q=weather+$city"| head -8 | tail -n 1 | cut -c 23-30
