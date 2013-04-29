@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# $Date: Mon 29 Apr 2013 08:50:28 AM UTC $
+# $Date: Mon 29 Apr 2013 01:14:05 PM UTC $
 # Jeremiah Dow <jeremdow@gmail.com>
 #
 # Prints the average transfer rates since last run to stdout.
@@ -31,7 +31,7 @@ awk ' {
 END {
 	if ('$interval') {
 		rx=(rxa[2]-rxa[1])/1024/'$interval';
-		tx=(txa[2]-txa[1])/1024'$interval';
+		tx=(txa[2]-txa[1])/1024/'$interval';
 	}
 
 	if (rx > 1024) {
