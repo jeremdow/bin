@@ -1,6 +1,33 @@
-#!/bin/bash
+#!/bin/sh
 
 #for i in {0..255} ; do
-for i in {0..15} ; do
-    printf "\x1b[38;5;${i}mcolour${i}\n"
-done
+for i in {0..7} ; do
+    printf "\033[38;5;${i}mcolour${i}\033[00m   "
+done; echo;
+
+for i in {8..9} ; do
+    printf "\033[38;5;${i}mcolour${i}\033[00m   "
+done;
+
+for i in {10..15} ; do
+    printf "\033[38;5;${i}mcolour${i}\033[00m  "
+done; echo; echo
+
+printf "\033[38;5;235mcolour235\033[00m "
+printf "\033[38;5;124mcolour124\033[00m "
+printf "\033[38;5;64mcolour64\033[00m  "
+printf "\033[38;5;136mcolour136\033[00m "
+printf "\033[38;5;33mcolour33\033[00m  "
+printf "\033[38;5;125mcolour125\033[00m "
+printf "\033[38;5;37mcolour37\033[00m  "
+printf "\033[38;5;187mcolour187\033[00m "
+echo
+printf "\033[38;5;234mcolour234\033[00m "
+printf "\033[38;5;166mcolour166\033[00m "
+printf "\033[38;5;239mcolour239\033[00m "
+printf "\033[38;5;240mcolour240\033[00m "
+printf "\033[38;5;244mcolour244\033[00m "
+printf "\033[38;5;61mcolour61\033[00m  "
+printf "\033[38;5;245mcolour245\033[00m "
+printf "\033[38;5;230mcolour230\033[00m "
+echo
