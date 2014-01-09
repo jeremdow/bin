@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# $Date: Sat 04 May 2013 02:57:51 AM UTC $
+# $Date: Thu 09 Jan 2014 09:02:24 PM UTC $
 # Jeremiah Dow <jeremdow@gmail.com>
 #
 # current conditions from Google in degrees fahrenheit
@@ -9,6 +9,6 @@
 
 # links or similar text browser
 browser="links"
-city=$(echo ${@:-juneau} | tr " " "+")
+city=$(echo ${@:-boston} | tr " " "+")
 
-$browser -dump "http://www.google.com/search?hl=en&q=weather+$city" | grep -m1 DEGF | cut -c 23-30
+$browser -dump "http://www.google.com/search?hl=en&q=weather+$city" | grep -m1 -o '[0-9]*DEGF'
