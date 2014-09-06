@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# $Date: Sat 06 Sep 2014 04:12:33 AM UTC $
+# $Date: Sat 06 Sep 2014 04:25:52 AM UTC $
 # Jeremiah Dow <jeremdow@gmail.com>
 #
 # current conditions from Google in degrees fahrenheit
@@ -9,8 +9,8 @@
 
 # set your browser (links or similar text browser)
 browser='links'
-# set your default location (by city)
+# set your default city
 city='boston'
 
-location=$(echo ${@:-$city} | tr " " "+")
-$browser -dump "http://www.google.com/search?hl=en&q=weather+$location" | grep -m1 -o '[0-9]*DEGF'
+$browser -dump "http://www.google.com/search?hl=en&q=weather+$(echo ${@:-$city} | tr ' ' '+')" |
+grep -m1 -o '[0-9]*DEGF'
